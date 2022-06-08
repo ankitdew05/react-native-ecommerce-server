@@ -48,14 +48,26 @@ router.put('/:id',async (req, res)=> {
 
 
 
-router.get('/:id', async(req,res)=>{
-    const user = await User.findById(req.params.id).select('-passwordHash');
-
-    if(!user) {
-        res.status(500).json({message: 'The user with the given ID was not found.'})
-    } 
-    res.status(200).send(user);
-})
+router.get('/:id', async(req, res) => {
+    try {
+        const user = await User.findById(req.params.id).select('-passwordHash');
+ 
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'user not found',
+            });
+        }
+ 
+        res.status(200).send(user);
+    } catch (err) {
+        return res.status(400).json({
+            success: false,
+            message: 'error',
+            error: err,
+        });
+    }
+});
 
 router.post('/', async (req,res)=>{
     let user = new User({

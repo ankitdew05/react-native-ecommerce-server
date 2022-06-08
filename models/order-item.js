@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 
 const orderItemSchema = mongoose.Schema({
@@ -10,5 +11,13 @@ const orderItemSchema = mongoose.Schema({
         ref: 'Product'
     }
 })
+
+orderItemSchema.virtual('id').get(function () {
+    return this._id.toHexString();
+});
+
+orderItemSchema.set('toJSON', {
+    virtuals: true,
+});
 
 exports.OrderItem = mongoose.model('OrderItem', orderItemSchema);

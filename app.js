@@ -7,11 +7,11 @@ const mongoose = require('mongoose');
 const api = process.env.API_URL;
 const authJwt = require('./helpers/jwt');
 const errorHandler = require('./helpers/error-handler')
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5000', optionsSuccessStatus: 200 }));
 app.use(express.json());
 app.use(morgan('tiny'));
 
-app.options('*', cors());
+app.options('*', cors({ origin: 'http://localhost:5000', optionsSuccessStatus: 200 }));
 app.use(authJwt());
 app.use(errorHandler);
 app.use('/public/uploads', express.static(__dirname+ '/public/uploads'));
