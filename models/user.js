@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema({
     country: {
         type: String,
         default: ''
+    },
+    code: {
+        type: String,
+        default: ''
     }
 
 });

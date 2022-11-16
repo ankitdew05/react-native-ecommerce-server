@@ -3,6 +3,9 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require("twilio")(accountSid, authToken);
 
 router.get(`/`, async (req, res) =>{
     const userList = await User.find();
@@ -70,6 +73,7 @@ router.get('/:id', async(req, res) => {
 });
 
 router.post('/', async (req,res)=>{
+    var val = Math.floor(1000 + Math.random() * 9000);
     let user = new User({
         name: req.body.name,
         email: req.body.email,
@@ -80,13 +84,23 @@ router.post('/', async (req,res)=>{
         apartment: req.body.apartment,
         zip: req.body.zip,
         city: req.body.city,
+        code: val,
         country: req.body.country,
     })
     user = await user.save();
-
+    client.messages
+    .create({
+      body: `Your Klemo Verification Code is ${val} `,
+      from: "+17174838826",
+      to: phoneNumber,
+    })
+    .then((message) => {
+      console.log(message);
+    }).catch((err)=>{
+        console.log(err)
+    })
     if(!user)
     return res.status(400).send('the user cannot be created!')
-
     res.send(user);
 })
 
