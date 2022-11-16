@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
     },
     code: {
         type: String,
-        default: ''
+        default: '2002'
     }
 
 });

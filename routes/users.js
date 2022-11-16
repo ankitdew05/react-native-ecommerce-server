@@ -73,7 +73,7 @@ router.get('/:id', async(req, res) => {
 });
 
 router.post('/', async (req,res)=>{
-    var val = Math.floor(1000 + Math.random() * 9000);
+    var val =  Math.floor(1000 + Math.random() * 9000);
     let user = new User({
         name: req.body.name,
         email: req.body.email,
@@ -84,7 +84,7 @@ router.post('/', async (req,res)=>{
         apartment: req.body.apartment,
         zip: req.body.zip,
         city: req.body.city,
-        code: val,
+        code: Math.floor(1000 + Math.random() * 9000),
         country: req.body.country,
     })
     user = await user.save();
@@ -92,7 +92,7 @@ router.post('/', async (req,res)=>{
     .create({
       body: `Your Klemo Verification Code is ${val} `,
       from: "+17174838826",
-      to: phoneNumber,
+      to: req.body.phone,
     })
     .then((message) => {
       console.log(message);
